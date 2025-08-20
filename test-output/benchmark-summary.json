@@ -1,0 +1,49 @@
+{
+  "timestamp": "2025-08-20T10:37:08.775Z",
+  "settings": {
+    "maxColors": 12,
+    "threadThickness": 5,
+    "hatch": "cross",
+    "preserveTransparency": true,
+    "style": {
+      "orientation": "binned-8",
+      "edges": "canny",
+      "mode": "photo"
+    },
+    "lighting": {
+      "sheen": 0.35
+    },
+    "border": {
+      "stitch": true,
+      "width": 3
+    },
+    "density": {
+      "scale": 1.5
+    },
+    "grain": {
+      "randomness": 0.25
+    }
+  },
+  "results": [
+    {
+      "image": "image1.jpg",
+      "timeMs": 1013,
+      "sizeKB": 501,
+      "paletteSize": 0,
+      "warnings": []
+    },
+    {
+      "image": "image2.jpeg",
+      "timeMs": 274,
+      "sizeKB": 54,
+      "paletteSize": 0,
+      "warnings": []
+    }
+  ],
+  "summary": {
+    "avgTime": 644,
+    "maxTime": 1013,
+    "target": 500,
+    "passed": false
+  }
+}

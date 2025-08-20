@@ -44,5 +44,16 @@
     "density": { "scale": 1.0 },
     "grain": { "randomness": 0.1 }
   },
-  
+  "maximumQuality": {
+    "maxColors": 12,
+    "threadThickness": 5,
+    "hatch": "cross",
+    "preserveTransparency": true,
+    "style": { "orientation": "binned-8", "edges": "canny", "mode": "photo" },
+    "lighting": { "sheen": 0.35 },
+    "border": { "stitch": true, "width": 3 },
+    "density": { "scale": 1.5 },
+    "grain": { "randomness": 0.25 },
+    "background": { "type": "fabric", "texture": "linen" }
+  }
 }
