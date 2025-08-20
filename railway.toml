@@ -1,0 +1,15 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+
+[[build.env]]
+key = "NODE_ENV"
+value = "production"
+
+[[build.env]]
+key = "MAX_WORKERS"
+value = "2"
