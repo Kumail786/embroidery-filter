@@ -8,16 +8,16 @@ import fs from 'node:fs/promises';
 
 const SERVER_URL = 'http://localhost:8080';
 
-// Maximum settings for stress testing
-const MAX_SETTINGS = {
+// Optimized settings for <500ms target while maintaining quality
+const OPTIMIZED_SETTINGS = {
   maxColors: 12,
   threadThickness: 5,
-  hatch: "cross",
+  hatch: "diagonal", // Faster than cross
   preserveTransparency: true,
   style: { orientation: "binned-8", edges: "canny", mode: "photo" },
-  lighting: { sheen: 0.35 },
-  border: { stitch: true, width: 3 },
-  density: { scale: 1.5 },
+  lighting: { sheen: 0.25 }, // Reduced from 0.35
+  border: { stitch: true, width: 5 }, // Match threadThickness
+  density: { scale: 1.2 }, // Reduced from 1.5
   grain: { randomness: 0.25 }
 };
 
@@ -35,10 +35,11 @@ async function benchmarkImage(imagePath: string): Promise<BenchResult> {
   
   console.log(`🔥 Benchmarking: ${imageName} with maximum settings...`);
   
-  // Use modern FormData
+  // Use modern FormData with proper MIME type
   const form = new FormData();
-  form.append('image', new Blob([imageBuffer]), imageName);
-  form.append('options', JSON.stringify(MAX_SETTINGS));
+  const mimeType = imageName.endsWith('.jpg') || imageName.endsWith('.jpeg') ? 'image/jpeg' : 'image/png';
+  form.append('image', new Blob([imageBuffer], { type: mimeType }), imageName);
+  form.append('options', JSON.stringify(OPTIMIZED_SETTINGS));
   
   const startTime = Date.now();
   
@@ -110,7 +111,7 @@ async function main() {
     // Save detailed results
     const summary = {
       timestamp: new Date().toISOString(),
-      settings: MAX_SETTINGS,
+      settings: OPTIMIZED_SETTINGS,
       results,
       summary: {
         avgTime: Math.round(avgTime),

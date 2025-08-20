@@ -1,0 +1,154 @@
+{
+  "info": {
+    "name": "Embroidery Filter API",
+    "description": "Collection for testing the embroidery filter API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "description": "API base URL - change to your deployed URL"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Check if the server is running and get configuration info"
+      },
+      "response": []
+    },
+    {
+      "name": "Embroidery Filter - Basic",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": [],
+              "description": "Upload an image file (JPG/PNG)"
+            },
+            {
+              "key": "options",
+              "value": "{\n  \"maxColors\": 8,\n  \"threadThickness\": 3,\n  \"hatch\": \"diagonal\",\n  \"style\": {\n    \"orientation\": \"binned-4\",\n    \"edges\": \"canny\",\n    \"mode\": \"photo\"\n  }\n}",
+              "type": "text",
+              "description": "Basic embroidery options"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/filter/embroidery",
+          "host": ["{{baseUrl}}"],
+          "path": ["filter", "embroidery"]
+        },
+        "description": "Convert image to embroidery with basic settings"
+      },
+      "response": []
+    },
+    {
+      "name": "Embroidery Filter - Maximum Quality",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": [],
+              "description": "Upload an image file (JPG/PNG)"
+            },
+            {
+              "key": "options",
+              "value": "{\n  \"maxColors\": 12,\n  \"threadThickness\": 5,\n  \"hatch\": \"diagonal\",\n  \"preserveTransparency\": true,\n  \"style\": {\n    \"orientation\": \"binned-8\",\n    \"edges\": \"canny\",\n    \"mode\": \"photo\"\n  },\n  \"lighting\": {\n    \"sheen\": 0.25\n  },\n  \"border\": {\n    \"stitch\": true,\n    \"width\": 5\n  },\n  \"density\": {\n    \"scale\": 1.2\n  },\n  \"grain\": {\n    \"randomness\": 0.25\n  },\n  \"background\": {\n    \"type\": \"fabric\",\n    \"texture\": \"linen\"\n  }\n}",
+              "type": "text",
+              "description": "Maximum quality embroidery options"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/filter/embroidery",
+          "host": ["{{baseUrl}}"],
+          "path": ["filter", "embroidery"]
+        },
+        "description": "Convert image to embroidery with maximum quality settings"
+      },
+      "response": []
+    },
+    {
+      "name": "Embroidery Filter - Fast Preview",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": [],
+              "description": "Upload an image file (JPG/PNG)"
+            },
+            {
+              "key": "options",
+              "value": "{\n  \"maxColors\": 6,\n  \"threadThickness\": 2,\n  \"hatch\": \"vertical\",\n  \"style\": {\n    \"orientation\": \"uniform\",\n    \"edges\": \"sobel\",\n    \"mode\": \"photo\"\n  },\n  \"density\": {\n    \"scale\": 0.8\n  }\n}",
+              "type": "text",
+              "description": "Fast preview options for quick processing"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/filter/embroidery",
+          "host": ["{{baseUrl}}"],
+          "path": ["filter", "embroidery"]
+        },
+        "description": "Convert image to embroidery with fast preview settings"
+      },
+      "response": []
+    },
+    {
+      "name": "Embroidery Filter - Logo Mode",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": [],
+              "description": "Upload a logo/simple image (PNG with transparency recommended)"
+            },
+            {
+              "key": "options",
+              "value": "{\n  \"maxColors\": 8,\n  \"threadThickness\": 4,\n  \"hatch\": \"cross\",\n  \"preserveTransparency\": true,\n  \"style\": {\n    \"orientation\": \"binned-4\",\n    \"edges\": \"canny\",\n    \"mode\": \"logo\"\n  },\n  \"border\": {\n    \"stitch\": true,\n    \"width\": 3\n  }\n}",
+              "type": "text",
+              "description": "Logo mode options for simple graphics"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/filter/embroidery",
+          "host": ["{{baseUrl}}"],
+          "path": ["filter", "embroidery"]
+        },
+        "description": "Convert simple graphics/logos to embroidery"
+      },
+      "response": []
+    }
+  ]
+}

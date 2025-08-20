@@ -181,10 +181,12 @@ app.post('/filter/embroidery', upload.single('image'), async (req, res) => {
 
     // Set response headers
     res.setHeader('Content-Type', result.mime);
-    res.setHeader('X-Processing-Ms', String(processingTime));
+    res.setHeader('X-Processing-Time', String(processingTime));
+    res.setHeader('X-Palette-Size', String(result.meta?.paletteSize || 0));
+    res.setHeader('X-Original-Size', `${result.meta?.originalSize?.width}x${result.meta?.originalSize?.height}`);
+    res.setHeader('X-Final-Size', `${result.meta?.finalSize?.width}x${result.meta?.finalSize?.height}`);
     
-    if (result.meta?.palette) res.setHeader('X-Palette', JSON.stringify(result.meta.palette));
-    if (result.meta?.warnings?.length) res.setHeader('X-Warnings', result.meta.warnings.join('|'));
+    if (result.meta?.warnings?.length) res.setHeader('X-Warnings', result.meta.warnings.join(','));
 
     // Send processed image
     return res.send(Buffer.from(result.buffer));

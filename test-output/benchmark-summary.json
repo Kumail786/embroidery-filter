@@ -1,9 +1,9 @@
 {
-  "timestamp": "2025-08-20T10:37:08.775Z",
+  "timestamp": "2025-08-20T11:05:55.825Z",
   "settings": {
     "maxColors": 12,
     "threadThickness": 5,
-    "hatch": "cross",
+    "hatch": "diagonal",
     "preserveTransparency": true,
     "style": {
       "orientation": "binned-8",
@@ -11,14 +11,14 @@
       "mode": "photo"
     },
     "lighting": {
-      "sheen": 0.35
+      "sheen": 0.25
     },
     "border": {
       "stitch": true,
-      "width": 3
+      "width": 5
     },
     "density": {
-      "scale": 1.5
+      "scale": 1.2
     },
     "grain": {
       "randomness": 0.25
@@ -27,22 +27,22 @@
   "results": [
     {
       "image": "image1.jpg",
-      "timeMs": 1013,
-      "sizeKB": 501,
-      "paletteSize": 0,
+      "timeMs": 859,
+      "sizeKB": 1151,
+      "paletteSize": 12,
       "warnings": []
     },
     {
       "image": "image2.jpeg",
-      "timeMs": 274,
-      "sizeKB": 54,
-      "paletteSize": 0,
+      "timeMs": 239,
+      "sizeKB": 66,
+      "paletteSize": 12,
       "warnings": []
     }
   ],
   "summary": {
-    "avgTime": 644,
-    "maxTime": 1013,
+    "avgTime": 549,
+    "maxTime": 859,
     "target": 500,
     "passed": false
   }

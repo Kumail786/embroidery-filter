@@ -8,11 +8,11 @@
     "dev": "tsx src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-
     "test": "jest",
     "bench": "tsx scripts/benchmark.ts",
     "lint": "eslint src/**/*.ts",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "canvas": "^3.2.0",
