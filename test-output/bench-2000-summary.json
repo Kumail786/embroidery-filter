@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-08-20T10:01:01.521Z",
+  "results": [
+    {
+      "name": "bench-2000-synth-preview",
+      "ms": 803,
+      "size": 352241,
+      "warnings": [
+        "Thin strokes may not embroider cleanly"
+      ],
+      "paletteSize": 8
+    }
+  ]
+}

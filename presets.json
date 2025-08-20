@@ -1,0 +1,48 @@
+{
+  "preview": {
+    "maxColors": 8,
+    "threadThickness": 3,
+    "hatch": "diagonal",
+    "preserveTransparency": true,
+    "style": { "orientation": "binned-8", "edges": "canny", "mode": "photo" },
+    "lighting": { "sheen": 0.2 },
+    "border": { "stitch": true },
+    "density": { "scale": 1.0 },
+    "grain": { "randomness": 0.15 }
+  },
+  "crossStitch": {
+    "maxColors": 6,
+    "threadThickness": 4,
+    "hatch": "cross",
+    "preserveTransparency": true,
+    "style": { "orientation": "binned-8", "edges": "canny", "mode": "photo" },
+    "lighting": { "sheen": 0.25 },
+    "border": { "stitch": true },
+    "density": { "scale": 1.2 },
+    "grain": { "randomness": 0.18 }
+  },
+  "logoChecker": {
+    "maxColors": 8,
+    "threadThickness": 3,
+    "hatch": "diagonal",
+    "preserveTransparency": true,
+    "style": { "orientation": "binned-8", "edges": "canny", "mode": "logo" },
+    "lighting": { "sheen": 0.2 },
+    "border": { "stitch": true },
+    "density": { "scale": 1.0 },
+    "grain": { "randomness": 0.15 },
+    "warnSmallDetails": true
+  },
+  "fastPreview": {
+    "maxColors": 6,
+    "threadThickness": 3,
+    "hatch": "none",
+    "preserveTransparency": true,
+    "style": { "orientation": "binned-4", "edges": "canny", "mode": "photo" },
+    "lighting": { "sheen": 0.15 },
+    "border": { "stitch": true },
+    "density": { "scale": 1.0 },
+    "grain": { "randomness": 0.1 }
+  },
+  
+}

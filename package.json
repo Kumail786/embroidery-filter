@@ -1,0 +1,52 @@
+{
+  "name": "embroidery-filter",
+  "version": "1.0.0",
+  "description": "Server-side embroidery filter for images with sub-0.5s processing time",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "gen:logo": "tsx scripts/gen-logo.ts",
+    "test": "jest",
+    "bench": "tsx scripts/bench-2000.ts",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "canvas": "^3.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "lru-cache": "^10.2.0",
+    "multer": "^1.4.5-lts.1",
+    "piscina": "^4.6.1",
+    "sharp": "^0.33.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/multer": "^1.4.11",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "esbuild-register": "^3.5.0",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "tsx": "^4.16.0",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "embroidery",
+    "image-processing",
+    "filter",
+    "computer-vision",
+    "nodejs"
+  ],
+  "author": "Embroidery Filter Team",
+  "license": "MIT"
+}

@@ -1,0 +1,131 @@
+Server-Side Embroidery Filter — Unified Requirements & Spec (Node.js)
+1) Objective
+Create a server-side image filter that converts a user’s PNG/JPG logo into a realistic embroidery mockup suitable for hat previews. The effect must be fast (<0.5s @ 2000×2000), non-ML, and scalable.
+
+2) Inputs
+Image: PNG or JPG (up to 2000×2000).
+Background (optional):
+Fabric texture image (e.g., hat cloth) or
+Solid color (hex).
+Controls (defaults in parentheses):
+maxColors (8) — integer 2..12.
+threadThickness (3 px) — integer 1..10.
+hatch ("diagonal") — "none" | "diagonal" | "cross".
+preserveTransparency (true).
+style.orientation ("binned-8") — "binned-8" (fast) or "lic" (pro realism, optional).
+style.edges ("canny") — edge detector preset.
+lighting.sheen (0.25) — 0..1 specular highlight along thread direction.
+border.stitch (true) — draw stitched rim around design.
+border.width (threadThickness) — px.
+density.scale (1.0) — global stitch density multiplier (0.5..2).
+grain.randomness (0.15) — subtle perturbation for realism (0..0.5).
+warnSmallDetails (true) — flag designs that won’t embroider well.
+
+3) Outputs
+Image: PNG or JPG (match input) with embroidery styling.
+Transparency: preserved if requested; otherwise composited on fabric/color.
+Metadata (JSON sidecar or headers):
+processingMs, palette, warnings[] (e.g., “detail too small”).
+
+4) Visual Features (the “filters” we will implement)
+Palette Reduction (≤12 colors)
+Purpose: Force clean, stitchable regions and reduce noise.
+Edge Detection + Contour Accents
+Emphasize borders/ridges so letters/logos read as stitched.
+Directional Thread Texture
+Threads follow contour flow using a fast orientation field.
+v1: orientations binned (8 angles) with pre-rotated thread tiles.
+v2 (optional): flow-aligned LIC for ultra-real streaks.
+Hatch / Cross-Stitch Fill
+Per-region tiling; density modulated by luminance/importance.
+Stitched Rim / Border
+Morphological rim band; dash pattern to mimic discrete stitches.
+Fabric/Patch Background (optional)
+Composite on hat-like weave or color; add subtle bevel/emboss.
+Directional Sheen
+Light specular highlight along thread direction for realism.
+Auto Warnings / Suitability Check
+Detect sub-threshold details (thin strokes, microtext) and return warnings[] suggesting redesign (the T1/T2 use-case).
+
+5) Processing Pipeline (high level)
+Decode & normalize (premultiply alpha; clamp to ≤2000px).
+Quantize colors to ≤maxColors.
+Masks & edges: build alpha/region masks; run Canny; compute rim band.
+Orientation field: Sobel gradients → structure tensor → 8-bin index (v1).
+Thread layer: composite pre-rotated thread tiles through orientation-bin masks; add sheen.
+Hatch layer: diagonal/cross hatch tiles masked by regions; density by luminance.
+Border stitch: dashed rim overlay with width=threadThickness.
+Edge pop: hard-light/overlay blend of edges for definition.
+Background: preserve alpha or composite on fabric/color.
+Encode: PNG/JPG; attach metadata (processingMs, palette, warnings[]).
+All steps are classical image ops (no ML), suitable for sub-second runtime.
+
+6) API (single endpoint)
+POST /filter/embroidery (multipart form-data)
+image — file (required)
+options — JSON string with controls above
+Response
+Content-Type: image/png or image/jpeg
+Body: processed image
+Headers or JSON sidecar (optional): X-Processing-Ms, X-Warnings
+Example options:
+{
+  "maxColors": 8,
+  "threadThickness": 3,
+  "hatch": "cross",
+  "preserveTransparency": true,
+  "style": { "orientation": "binned-8", "edges": "canny" },
+  "background": { "type": "fabric", "name": "dark-heather" }
+}
+
+
+7) Presets (client-facing, one-click)
+Preview (fast): binned-8, hatch=diagonal, sheen=0.2, border=true.
+Cross-Stitch: hatch=cross, density=1.2, threadThickness=4.
+Logo Checker: same as Preview + warnSmallDetails=true (returns warnings).
+Photoreal (optional): style.orientation=lic, sheen=0.35 (slower but still <0.5s target on modern CPUs if kept at 1500–2000px).
+
+8) Performance & Scalability
+Budget: total < 500 ms @ 2000×2000 on a typical vCPU.
+Techniques:
+Downscale analysis (edges/orientation) to ~1000–1500px; upscale masks.
+Pre-generate/cached tiles & kernels.
+Node worker-pool (Piscina), sharp/libvips for I/O/composites.
+Stateless service → horizontal scale; optional queue for bursts.
+
+9) Warnings / Suitability Rules (examples)
+Minimum stroke width (after quantization) < threadThickness → warnings += ["Thin strokes may not embroider cleanly"].
+Letter height < 12 px @ 2000px canvas → small text warning.
+Color count > maxColors → auto quantized, warnings += ["Reduced colors to X"].
+Excessive detail area (high edge density region) → warnings += ["Dense detail may fill in on fabric"].
+
+10) Assets We’ll Prepare
+Thread tiles: 1 base + 8 pre-rotated angles (256×256 PNG).
+Hatch tiles: diagonal & cross (128×128 PNG).
+Fabric textures: a small set (e.g., dark heather, khaki twill).
+Dash masks: for stitched rim patterns.
+
+11) Technology
+Node.js / TypeScript (Linux).
+sharp (libvips) — decode/encode, composites, convolution.
+OpenCV (bindings) — Canny, Sobel, morphology.
+image-q — palette reduction (≤12 colors).
+node-canvas — fast pattern tiling for full-frame textures.
+Piscina — worker threads for CPU ops.
+No machine learning dependencies.
+
+12) Deliverables
+Working prototype filter service (Node/TS, Dockerfile).
+Source code with clear README + examples.
+Test script/CLI to batch-process samples and print timings.
+Preset JSONs (“Preview”, “Cross-Stitch”, “Logo Checker”).
+Sample assets (tiles, fabrics).
+Quality guide (how to interpret warnings; how to redesign for embroidery).
+
+13) Acceptance Criteria
+Processes a 2000×2000 PNG ∕ JPG with defaults in ≤500 ms average on reference hardware.
+Produces legible, stitched look on letters/shapes (directional thread + hatch visible).
+Transparency preserved when requested; otherwise clean composite on fabric/color.
+Warnings correctly flag microtext / thin strokes in provided T1/T2-like cases.
+Deterministic outputs (same input + options → same output).
+Service stable under concurrent requests (e.g., 20 RPS burst with a 4–8 thread pool).
