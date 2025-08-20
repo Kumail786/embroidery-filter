@@ -20,7 +20,8 @@
     "allowUnreachableCode": false,
     "lib": ["ES2022"],
     "types": ["node", "jest"],
-    "allowImportingTsExtensions": false
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "include": [
     "src/**/*"

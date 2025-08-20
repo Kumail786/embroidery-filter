@@ -26,8 +26,7 @@ RUN npm ci --only=production
 # Copy source code
 COPY . .
 
-# Build the application
-RUN npm run build
+# No build step needed - using tsx directly
 
 # Create non-root user for security
 RUN groupadd -r appuser && useradd -r -g appuser appuser
@@ -41,5 +40,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8080/health || exit 1
 
-# Start the application
-CMD ["node", "dist/server.js"]
+# Start the application with tsx
+CMD ["npx", "tsx", "src/server.ts"]
